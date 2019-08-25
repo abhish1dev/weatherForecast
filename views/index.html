@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Weather</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+
+  <div class="container">
+    <div class="jumbotron text-center">
+      <h1>Weather</h1>
+      <div id="cityTimezone">
+      </div>
+      <div class="dropdown">
+        <select id='mySelect'></select>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-1">
+      </div>
+      <div id="weatherdiv">
+
+      </div>
+      <div class="col-sm-1">
+      </div>
+    </div>
+  </div>
+
+</body>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script>
+  $('#mySelect').append($('<option >', {
+    value: 0,
+    text: "Select city",
+    id: 0
+  }));
+  $.get("http://localhost:8089/v1.0/weather", function (data) {
+    data.success.data.forEach(function (item) {
+      $('#mySelect').append($('<option >', {
+        value: item.id,
+        text: item.name,
+        id: item.id,
+        time: item.time
+      }));
+    });
+
+  });
+
+  $('#mySelect').change(function () {
+    var value = $(this).val();
+
+    $.get("http://localhost:8089/v1.0/weather/" + value, function (data) {
+      if (data.success.data != undefined) {
+        $('#weatherdiv').empty()
+        $('#cityTimezone').empty()
+        var timezone =
+          '<h3>' + data.success.data[0].cityTimezone + '</h3>'
+        $('#cityTimezone').append(timezone)
+        data.success.data.forEach(function (item) {
+
+          var weather_data =
+            '<div class="col-sm-2"><h3>' + item.day + '</h3><p>' + item.temp + '°c' + '</p></div>'
+          $('#weatherdiv').append(weather_data)
+        });
+      } else {
+        $('#cityTimezone').empty()
+        $('#weatherdiv').empty()
+        $('#weatherdiv').append(`<div class="text-center"><h1>No record found</h1>`)
+      }
+
+    });
+  });
+
+</script>
+
+</html>
