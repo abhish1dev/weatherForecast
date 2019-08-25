@@ -10,7 +10,6 @@ import HttpStatus from 'http-status';
 
 
 class ResponseObject {
-
   /**
    *Creates an instance of ResponseObject.
    * @param {integer} statusCode - Http sattuscode

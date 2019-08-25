@@ -1,7 +1,5 @@
 import express from 'express';
-import Validate from 'express-validation';
 import Weather from '../Controllers/Weather';
-import Validation from '../Validations/Weather';
 
 const router = express.Router();
 

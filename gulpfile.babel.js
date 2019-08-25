@@ -20,8 +20,8 @@ gulp.task('clean', () =>
 // Copy non-js files to dist
 gulp.task('copy', () =>
   gulp.src(paths.nonJs)
-  .pipe(plugins.newer('dist'))
-  .pipe(gulp.dest('dist'))
+    .pipe(plugins.newer('dist'))
+    .pipe(gulp.dest('dist'))
 );
 
 // Compile ES6 to ES5 and copy to dist
@@ -29,24 +29,24 @@ gulp.task('babel', () =>
   gulp.src([...paths.js, '!gulpfile.babel.js'], {
     base: '.'
   })
-  .pipe(plugins.newer('dist'))
-  .pipe(plugins.sourcemaps.init())
-  .pipe(plugins.babel({
-    "presets": ["es2015","stage-2"],
-    "plugins": [
-      ["transform-runtime", {
-        "polyfill": false,
-        "regenerator": true
-      }]
-    ]
-  }))
-  .pipe(plugins.sourcemaps.write('.', {
-    includeContent: false,
-    sourceRoot(file) {
-      return path.relative(file.path, __dirname);
-    }
-  }))
-  .pipe(gulp.dest('dist'))
+    .pipe(plugins.newer('dist'))
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.babel({
+      presets: ['es2015', 'stage-2'],
+      plugins: [
+        ['transform-runtime', {
+          polyfill: false,
+          regenerator: true
+        }]
+      ]
+    }))
+    .pipe(plugins.sourcemaps.write('.', {
+      includeContent: false,
+      sourceRoot(file) {
+        return path.relative(file.path, __dirname);
+      }
+    }))
+    .pipe(gulp.dest('dist'))
 );
 
 // Start server with restart on file changes
